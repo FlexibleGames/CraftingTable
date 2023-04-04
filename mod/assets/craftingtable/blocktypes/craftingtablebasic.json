@@ -1,0 +1,41 @@
+{
+	code: "craftingtablebasic",
+	class: "BlockCraftingTable",
+	entityClass: "BECraftingTable",
+	behaviors: [{name: "HorizontalOrientable"}],
+	attributes: {
+		handbook: {
+			groupBy: ["craftingtable*"]
+		}
+	},
+	variantgroups: [
+		{ code: "wood", states: ["aged"], loadFromProperties: "block/wood" },
+	],
+	creativeinventory: { "general": ["*"], "terrain": ["*"], "mechanics": ["*"] },
+	shape: { base: "craftingtable:block/basicctable" },
+	blockmaterial: "Wood",
+	textures: {
+		pine: {
+			base: "game:block/wood/treetrunk/{wood}"
+		},
+		oak: { 
+			base: "game:block/wood/debarked/{wood}"			
+		},
+		oak2: {
+			base: "game:block/wood/bark/{wood}"
+		}
+	},
+	sidesolid: {
+		all: false, down: true
+	},
+	sideopaque: {
+		all: false
+	},
+	lightAbsorption: 1,
+	maxStackSize: 8,
+	replaceable: 600,
+	resistance: 1.5,
+	collisionSelectionBoxes: [		
+		{ x1: 0.0625, y1: 0, z1: 0.0625, x2: 0.9375, y2: 0.9375, z2: 0.9375 }		
+	]
+}

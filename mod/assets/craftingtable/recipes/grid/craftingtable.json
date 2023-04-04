@@ -1,0 +1,22 @@
+[
+{
+	ingredientPattern: "S_S,_L_,S_S",
+	ingredients: {
+		"S": { type: "item", code: "game:stick" },
+		"L": { type: "block", code: "game:log-placed-*-ud", name: "wood", allowedVariants: ["birch", "oak", "maple", "pine", "acacia", "kapok", "aged", "baldcypress", "larch", "redwood", "ebony", "walnut", "purpleheart"] }
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "craftingtable:craftingtablebasic-{wood}", quantity: 1  }
+},
+{
+	ingredientPattern: "_M_,MRM,_M_",
+	ingredients: {
+		"M": { type: "item", code: "game:ingot-*", name: "metal", allowedVariants: ["iron", "gold", "bismuth", "copper", "brass", "tinbronze", "lead"] },
+		"R": { type: "block", code: "game:rock-basalt", quantity: 1 }
+	},
+	width: 3,
+	height: 3,
+	output: { type: "block", code: "craftingtable:craftingtableadv-{metal}", quantity: 1  }	
+}
+]

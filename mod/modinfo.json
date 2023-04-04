@@ -1,0 +1,11 @@
+{
+  "type": "code",
+  "modid": "craftingtable",
+  "name": "Crafting Table",
+  "authors": [ "Flexible Games" ],
+  "description": "Crafting on a Table.",
+  "website": "https://www.youtube.com/c/FlexibleGames",
+  "side": "Universal",
+  "version": "0.3.0",
+  "dependency": {}
+}

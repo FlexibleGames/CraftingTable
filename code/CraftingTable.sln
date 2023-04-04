@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CraftingTable", "CraftingTable\CraftingTable.csproj", "{45182187-4C7E-4A86-AD01-102F9B1C3DAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{45182187-4C7E-4A86-AD01-102F9B1C3DAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45182187-4C7E-4A86-AD01-102F9B1C3DAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45182187-4C7E-4A86-AD01-102F9B1C3DAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45182187-4C7E-4A86-AD01-102F9B1C3DAD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A872AB5-82FF-4DFF-A3BA-F8AD9FF49AA4}
+	EndGlobalSection
+EndGlobal

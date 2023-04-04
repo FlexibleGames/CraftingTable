@@ -1,0 +1,35 @@
+{
+	code: "craftingtableadv",
+	class: "BlockCraftingTable",
+	entityClass: "BECraftingTable",
+	behaviors: [{name: "HorizontalOrientable"}],
+	attributes: {
+		handbook: {
+			groupBy: ["craftingtable*"]
+		}
+	},
+	variantgroups: [
+		{ code: "metal", states: ["iron", "gold", "bismuth", "copper", "brass", "tinbronze", "lead"] }
+	],
+	creativeinventory: { "general": ["*"], "terrain": ["*"], "mechanics": ["*"] },
+	shape: { base: "craftingtable:block/metaltable" },
+	blockmaterial: "Metal",
+	textures: {
+		tinbronze: {
+			base: "game:block/metal/ingot/{metal}"
+		}
+	},
+	sidesolid: {
+		all: false, down: true
+	},
+	sideopaque: {
+		all: false
+	},
+	lightAbsorption: 1,
+	maxStackSize: 8,
+	replaceable: 600,
+	resistance: 1.5,
+	collisionSelectionBoxes: [		
+		{ x1: 0.0625, y1: 0, z1: 0.0625, x2: 0.9375, y2: 0.875, z2: 0.9375 }
+	]
+}
