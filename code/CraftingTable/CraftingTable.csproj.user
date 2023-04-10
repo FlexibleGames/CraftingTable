@@ -3,7 +3,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
     <StartProgram>C:\Users\simtr\AppData\Roaming\Vintagestory\Vintagestory.exe</StartProgram>
-    <StartArguments>--addModPath "C:\_Programming\Vintage\CraftingTable\mod" -openWorld="ctmodtest"</StartArguments>
+    <StartArguments>--addModPath "C:\_Programming\Vintage\CraftingTable" -o modtestworld</StartArguments>
     <StartWorkingDirectory>C:\Users\simtr\AppData\Roaming\Vintagestory\</StartWorkingDirectory>
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
   </PropertyGroup>
