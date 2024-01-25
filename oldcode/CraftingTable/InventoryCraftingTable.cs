@@ -189,11 +189,9 @@ namespace CraftingTable
             }
         } 
 
-        public override WeightedSlot GetBestSuitedSlot(ItemSlot sourceSlot, 
-                                                       ItemStackMoveOperation op,
-                                                       List<ItemSlot> skipSlots = null)
-        {            
-            return base.GetBestSuitedSlot(sourceSlot, op, skipSlots);
+        public override WeightedSlot GetBestSuitedSlot(ItemSlot sourceSlot, List<ItemSlot> skipSlots = null)
+        {
+            return base.GetBestSuitedSlot(sourceSlot, skipSlots);
         }        
 
         public ItemSlot[] Slots

@@ -12,6 +12,9 @@ Quite a lot of users have expressed their thanks in this mod as it makes craftin
 ## Code
 The code is all here to hopefully help others trying to tackle the same issues. Bug fixes or new features can be submitted via pull request.
 
+# v0.5
+- Update to Game version 1.19 and migrated the project to .NET 7
+
 ## Support?
 If you want to support me on any of my projects, please consider being a patron.
 It can take many many hours to finish a mod, keep it updated, and fix any bugs found by users. Please consider supporting the authors of your favorite mods.

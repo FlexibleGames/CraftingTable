@@ -65,7 +65,7 @@ namespace CraftingTable
                 .BeginChildElements(dialog)
                 .AddInset(maingrid, 3, 0.85f).AddItemSlotGrid(Inventory, base.DoSendPacket, 3, new int[]
                 { 0,1,2,3,4,5,6,7,8 }, maingrid, "craftinggrid")
-                .AddSmallButton("X", OnClearButton, clearbtn, EnumButtonStyle.Small, "clearbtn")
+                .AddSmallButton("X", OnClearButton, clearbtn, EnumButtonStyle.Small, EnumTextOrientation.Center, "clearbtn")
                 .AddItemSlotGrid(Inventory, base.DoSendPacket, 1, new int[]
                 { 9 }, output, "outputslot")
                 .EndChildElements().Compose(true);
