@@ -7,6 +7,7 @@ using Vintagestory.API.Client;
 using Vintagestory.API.Datastructures;
 using Vintagestory.Common;
 using Vintagestory.API.MathTools;
+using System.Runtime.CompilerServices;
 
 namespace CraftingTable
 {
@@ -150,32 +151,23 @@ namespace CraftingTable
                 forPlayer = capi.World.Player;
                 tableuser = capi.World.Player;
             }
-
-            for (int i = 0; i < gridRecipes.Count; i++)
+            foreach (GridRecipe recipe in gridRecipes)
             {
-                GridRecipe gridRecipe = gridRecipes[i];
-                if (gridRecipe.Enabled && gridRecipe.Matches(forPlayer, this.slots, this.GridSize))
+                if (recipe.Enabled && recipe.Matches(forPlayer, this.slots, GridSize))
                 {
-                    this.MatchingRecipe = gridRecipes[i];
-                    this.outputSlot.Itemstack = this.MatchingRecipe.Output.ResolvedItemstack.Clone();
-                    if (gridRecipe.CopyAttributesFrom != null)
-                    {
-                        ItemStack inputStackForPatternCode = gridRecipe.GetInputStackForPatternCode(gridRecipe.CopyAttributesFrom, this.slots);
-                        if (inputStackForPatternCode != null)
-                        {
-                            ITreeAttribute treeAttribute = inputStackForPatternCode.Attributes.Clone();
-                            treeAttribute.MergeTree(this.outputSlot.Itemstack.Attributes);
-                            this.outputSlot.Itemstack.Attributes = treeAttribute;
-                        }
-                    }
-                    this.outputSlot.Itemstack.Collectible.OnCreatedByCrafting(this.slots, this.outputSlot, gridRecipes[i]);
-                    this.dirtySlots.Add(this.GridSizeSq);
+                    FoundMatch(recipe);
                     return;
                 }
             }
+        }
+
+        private void FoundMatch(GridRecipe recipe)
+        {
+            MatchingRecipe = recipe;
+            MatchingRecipe.GenerateOutputStack(slots, outputSlot);
             this.dirtySlots.Add(this.GridSizeSq);
         }
-        
+
         public void ConsumeIngredients()
         {
             if (this.MatchingRecipe == null)
