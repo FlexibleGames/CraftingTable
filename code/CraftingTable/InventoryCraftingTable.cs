@@ -8,6 +8,7 @@ using Vintagestory.API.Datastructures;
 using Vintagestory.Common;
 using Vintagestory.API.MathTools;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
 
 namespace CraftingTable
 {
@@ -84,7 +85,7 @@ namespace CraftingTable
         public override object ActivateSlot(int slotId, ItemSlot sourceSlot, ref ItemStackMoveOperation op)
         {
             object result;
-            if (slotId == this.GridSizeSq)
+            if (slotId == this.GridSizeSq) // crafting output slot...
             {
                 this.BeginCraft();
                 result = base.ActivateSlot(slotId, sourceSlot, ref op);
@@ -95,7 +96,7 @@ namespace CraftingTable
                         this.outputSlot.Itemstack = null;
                     }
                     else
-                    {                        
+                    {                                          
                         Api.World.SpawnItemEntity(outputSlot.Itemstack, this.Pos.ToVec3d());                                              
                     }
                 }
@@ -117,8 +118,17 @@ namespace CraftingTable
             if (slot is ItemSlotCraftingTableOutput)
             {
                 return;
-            }
+            }            
             this.FindMatchingRecipe();
+            if (Api.Side == EnumAppSide.Server)
+            {
+                IServerPlayer serverPlayer = Api.World.PlayerByUid(tableuser.PlayerUID) as IServerPlayer;
+                if (serverPlayer == null)
+                {
+                    return;
+                }
+                serverPlayer.BroadcastPlayerData(true);
+            }
         }
 
         public override void OnOwningEntityDeath(Vec3d pos)
@@ -143,6 +153,7 @@ namespace CraftingTable
             catch (Exception e)
             {
                 if (capi != null) capi.ShowChatMessage("Exception thrown Trying to modify item slot.");
+                Api.Logger.Error(e);
             }
         }
 
@@ -180,7 +191,7 @@ namespace CraftingTable
         {
             MatchingRecipe = recipe;
             MatchingRecipe.GenerateOutputStack(slots, outputSlot);
-            this.dirtySlots.Add(this.GridSizeSq);
+            this.dirtySlots.Add(GridSizeSq);
         }
 
         public void ConsumeIngredients(ItemSlot output_Slot)

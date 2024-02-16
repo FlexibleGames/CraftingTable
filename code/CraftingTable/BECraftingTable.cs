@@ -64,6 +64,10 @@ namespace CraftingTable
             chunkAtPos.MarkModified();
             UpdateMesh(slotid);
             MarkDirty(true);
+            if (tabledialog != null && tabledialog.IsOpened())
+            {
+                tabledialog.SingleComposer.ReCompose();
+            }
         }
 
         public void UpdateMesh(int slotid)
@@ -217,16 +221,20 @@ namespace CraftingTable
         public override bool OnPlayerRightClick(IPlayer byPlayer, BlockSelection blockSel)
         {            
             if (Api.World is IServerWorldAccessor)
-            {                
+            {
                 if (inventory.tableuser != null && inventory.tableuser.PlayerUID == byPlayer.PlayerUID)
-                {
+                {   // player has GUI open and is right clicking to close it
                     sapi.Network.SendBlockEntityPacket((IServerPlayer)byPlayer, Pos.X, Pos.Y, Pos.Z, 1001, null);
                     byPlayer.InventoryManager.CloseInventory(inventory);
                     inventory.SetPlayer(null);
                     base.MarkDirty(false);
                 }
+                else if (inventory.tableuser != null)
+                {   // a different player is trying to open the GUI
+                    sapi.SendIngameError(byPlayer as IServerPlayer, "alreadyopen", "Crafting Table GUI opened already.", Array.Empty<object>());
+                }
                 else
-                {
+                {   // no one has the GUI open
                     sapi.Network.SendBlockEntityPacket((IServerPlayer)byPlayer, Pos.X, Pos.Y, Pos.Z, 1000, null);
                     byPlayer.InventoryManager.OpenInventory(inventory);                    
                     inventory.SetPlayer(byPlayer);
