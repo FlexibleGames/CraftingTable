@@ -23,8 +23,7 @@ namespace CraftingTable
         }
         
         private void OnSlotModified(int slotid)
-        {
-            betable.MarkDirty();
+        {            
             this.capi.Event.EnqueueMainThreadTask(new Action(this.SetupDialog), "setupcraftingtabledlg");           
         }
 
@@ -77,10 +76,11 @@ namespace CraftingTable
                 .AddShadedDialogBG(dialog, true, 5)
                 .AddDialogTitleBar("Crafting Table", new Action(OnTitleBarClose), null, null)
                 .BeginChildElements(dialog)
-                .AddInset(maingrid, 3, 0.85f).AddItemSlotGrid(Inventory, new Action<object>(SendInvPacket) /*base.DoSendPacket*/, 3, new int[]
+                .AddInset(maingrid, 3, 0.85f)
+                .AddItemSlotGrid(Inventory, new Action<object>(SendInvPacket), 3, new int[]
                 { 0,1,2,3,4,5,6,7,8 }, maingrid, "craftinggrid")
                 .AddSmallButton("X", OnClearButton, clearbtn, EnumButtonStyle.Small, "clearbtn")
-                .AddItemSlotGrid(Inventory, new Action<object>(SendInvPacket) /*base.DoSendPacket*/, 1, new int[]
+                .AddItemSlotGrid(Inventory, new Action<object>(SendInvPacket), 1, new int[]
                 { 9 }, output, "outputslot")
                 .EndChildElements().Compose(true);
 

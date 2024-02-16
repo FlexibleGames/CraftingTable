@@ -127,7 +127,7 @@ namespace CraftingTable
                 {
                     return;
                 }
-                serverPlayer.BroadcastPlayerData(true);
+                serverPlayer.BroadcastPlayerData(false);
             }
         }
 
@@ -148,17 +148,7 @@ namespace CraftingTable
         {
             try
             {
-                int slot_id = GetSlotId(slot);
-                if (slot_id < 0)
-                {
-                    int a = 1;
-                }
-                else
-                {
-                    MarkSlotDirty(slot_id);
-                }
                 base.DidModifyItemSlot(slot, extractedStack);
-                
             }
             catch (Exception e)
             {
@@ -277,19 +267,14 @@ namespace CraftingTable
 
         public override void FromTreeAttributes(ITreeAttribute tree)
         {
-            ItemSlot[] array = this.SlotsFromTreeAttributes(tree, null, null);
-            int? num = (array != null) ? new int?(array.Length) : null;
-            int num2 = this.slots.Length;
-            if (num.GetValueOrDefault() == num2 & num != null)
-            {
-                this.slots = array;                
-            }
+            slots = SlotsFromTreeAttributes(tree, slots);
+            //ResolveBlocksOrItems();
         }
 
         public override void ToTreeAttributes(ITreeAttribute tree)
         {
             base.SlotsToTreeAttributes(slots, tree);
-            this.ResolveBlocksOrItems();
+            //this.ResolveBlocksOrItems();
         }
 
         public override float GetSuitability(ItemSlot sourceSlot, ItemSlot targetSlot, bool isMerge)
