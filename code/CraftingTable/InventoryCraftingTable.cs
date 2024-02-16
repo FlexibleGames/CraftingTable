@@ -148,6 +148,13 @@ namespace CraftingTable
         {
             try
             {
+                for (int i = 0; i < Count; i++)
+                {
+                    if (this[i] == slot)
+                    {
+                        if (capi != null) capi.ShowChatMessage("Found the Slot");
+                    }
+                }
                 base.DidModifyItemSlot(slot, extractedStack);
             }
             catch (Exception e)
