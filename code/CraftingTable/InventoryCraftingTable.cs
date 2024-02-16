@@ -136,7 +136,21 @@ namespace CraftingTable
 
         public override void DidModifyItemSlot(ItemSlot slot, ItemStack extractedStack = null)
         {
-            base.DidModifyItemSlot(slot, extractedStack);
+            try
+            {
+                base.DidModifyItemSlot(slot, extractedStack);
+            }
+            catch (Exception e)
+            {
+                if (capi != null) capi.ShowChatMessage("Exception thrown Trying to modify item slot.");
+            }
+        }
+
+        public override bool TryMoveItemStack(IPlayer player, string[] invIds, int[] slotIds, ref ItemStackMoveOperation op)
+        {
+            bool successful = base.TryMoveItemStack(player, invIds, slotIds, ref op);            
+            if (successful) { FindMatchingRecipe(); }
+            return successful;
         }
 
         public void FindMatchingRecipe()
@@ -159,6 +173,7 @@ namespace CraftingTable
                     return;
                 }
             }
+            dirtySlots.Add(GridSizeSq);
         }
 
         private void FoundMatch(GridRecipe recipe)
@@ -168,13 +183,16 @@ namespace CraftingTable
             this.dirtySlots.Add(this.GridSizeSq);
         }
 
-        public void ConsumeIngredients()
+        public void ConsumeIngredients(ItemSlot output_Slot)
         {
-            if (this.MatchingRecipe == null)
+            if (this.MatchingRecipe == null || output_Slot.Itemstack == null)
             {
                 return;
             }
-            this.MatchingRecipe.ConsumeInput(tableuser, slots, GridSize);
+            if (!output_Slot.Itemstack.Collectible.ConsumeCraftingIngredients(slots, output_Slot, MatchingRecipe))
+            {
+                this.MatchingRecipe.ConsumeInput(tableuser, slots, GridSize);
+            }            
             for (int i = 0; i < this.GridSizeSq + 1; i++)
             {
                 this.dirtySlots.Add(i);

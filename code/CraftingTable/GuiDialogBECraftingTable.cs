@@ -29,6 +29,16 @@ namespace CraftingTable
 
         public void SetupDialog()
         {
+            ItemSlot hoveredSlot = this.capi.World.Player.InventoryManager.CurrentHoveredSlot;
+            if (hoveredSlot != null && hoveredSlot.Inventory == base.Inventory)
+            {
+                this.capi.Input.TriggerOnMouseLeaveSlot(hoveredSlot);
+            }
+            else
+            {
+                hoveredSlot = null;
+            }
+
             double elementtodialogpadding = GuiStyle.ElementToDialogPadding;
             double unscaledslotpadding = GuiElementItemSlotGridBase.unscaledSlotPadding;
 
@@ -63,18 +73,24 @@ namespace CraftingTable
                 .AddShadedDialogBG(dialog, true, 5)
                 .AddDialogTitleBar("Crafting Table", new Action(OnTitleBarClose), null, null)
                 .BeginChildElements(dialog)
-                .AddInset(maingrid, 3, 0.85f).AddItemSlotGrid(Inventory, base.DoSendPacket, 3, new int[]
+                .AddInset(maingrid, 3, 0.85f).AddItemSlotGrid(Inventory, new Action<object>(SendInvPacket) /*base.DoSendPacket*/, 3, new int[]
                 { 0,1,2,3,4,5,6,7,8 }, maingrid, "craftinggrid")
                 .AddSmallButton("X", OnClearButton, clearbtn, EnumButtonStyle.Small, "clearbtn")
-                .AddItemSlotGrid(Inventory, base.DoSendPacket, 1, new int[]
+                .AddItemSlotGrid(Inventory, new Action<object>(SendInvPacket) /*base.DoSendPacket*/, 1, new int[]
                 { 9 }, output, "outputslot")
                 .EndChildElements().Compose(true);
-            SingleComposer.UnfocusOwnElements();
+
+            if (hoveredSlot != null)
+            {
+                base.SingleComposer.OnMouseMove(new MouseEvent(this.capi.Input.MouseX, capi.Input.MouseY));
+            }
+            //SingleComposer.UnfocusOwnElements();
         }
 
         private void SendInvPacket(object p)
         {
-            this.capi.Network.SendBlockEntityPacket(base.BlockEntityPosition.X, BlockEntityPosition.Y, BlockEntityPosition.Z, p);            
+            //this.capi.Network.SendBlockEntityPacket(base.BlockEntityPosition.X, BlockEntityPosition.Y, BlockEntityPosition.Z, p);            
+            this.capi.Network.SendPacketClient(p);
         }
 
         private bool OnClearButton()

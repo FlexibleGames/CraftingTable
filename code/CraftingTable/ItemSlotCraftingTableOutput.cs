@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Vintagestory.API.Common;
+using Vintagestory.API.Datastructures;
 
 namespace CraftingTable
 {
@@ -27,15 +28,21 @@ namespace CraftingTable
 
         public override int TryPutInto(ItemSlot sinkSlot, ref ItemStackMoveOperation op)
         {
+            if (this.Empty) return 0;
+
+            op.RequestedQuantity = base.StackSize;
+            ItemStack craftedStack = this.itemstack.Clone();
+
             if (this.hasLeftOvers)
             {
-                int result = base.TryPutInto(sinkSlot, ref op);
+                int moved = base.TryPutInto(sinkSlot, ref op);
                 if (!this.Empty)
                 {
-                    return result;
+                    TriggerEvent(craftedStack, moved, op.ActingPlayer);
+                    return moved;
                 }
                 this.hasLeftOvers = false;
-                this.Inv.ConsumeIngredients();
+                this.Inv.ConsumeIngredients(sinkSlot);
                 if (this.Inv.CanStillCraftCurrent())
                 {
                     this.itemstack = this.prevStack.Clone();
@@ -49,20 +56,35 @@ namespace CraftingTable
             {
                 this.CraftSingle(sinkSlot, ref op);
             }
+            if (op.ActingPlayer != null)
+            {
+                TriggerEvent(craftedStack, op.MovedQuantity, op.ActingPlayer);
+            }
             return op.MovedQuantity;
+        }
+
+        private void TriggerEvent(ItemStack craftedStack, int moved, IPlayer actingPlayer)
+        {
+            TreeAttribute tree = new TreeAttribute();
+            craftedStack.StackSize = moved;
+            tree["itemstack"] = new ItemstackAttribute(craftedStack);
+            tree["byentityid"] = new LongAttribute(actingPlayer.Entity.EntityId);
+            actingPlayer.Entity.World.Api.Event.PushEvent("onitemcrafted", tree);
         }
 
         public void CraftSingle(ItemSlot sinkSlot, ref ItemStackMoveOperation op)
         {
             int stacksize = base.StackSize;
-            int moveditems = base.TryPutInto(sinkSlot, ref op);
+            int moveditems = TryPutIntoNoEvent(sinkSlot, ref op);
             if (moveditems == stacksize)
             {
-                Inv.ConsumeIngredients();
+                Inv.ConsumeIngredients(sinkSlot);
             }
-            if (moveditems > 0 && !this.Empty)
+            if (moveditems > 0)
             {
-                hasLeftOvers = true;
+                //hasLeftOvers = true;
+                sinkSlot.OnItemSlotModified(sinkSlot.Itemstack);
+                OnItemSlotModified(sinkSlot.Itemstack);
             }            
         }
 
@@ -84,7 +106,7 @@ namespace CraftingTable
                 {
                     break;
                 }
-                this.Inv.ConsumeIngredients();
+                this.Inv.ConsumeIngredients(sinkSlot);
                 if (!this.Inv.CanStillCraftCurrent())
                 {
                     goto Bounce;
