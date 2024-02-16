@@ -148,7 +148,17 @@ namespace CraftingTable
         {
             try
             {
+                int slot_id = GetSlotId(slot);
+                if (slot_id < 0)
+                {
+                    int a = 1;
+                }
+                else
+                {
+                    MarkSlotDirty(slot_id);
+                }
                 base.DidModifyItemSlot(slot, extractedStack);
+                
             }
             catch (Exception e)
             {

@@ -24,21 +24,24 @@ namespace CraftingTable
         
         private void OnSlotModified(int slotid)
         {
-            this.capi.Event.EnqueueMainThreadTask(new Action(this.SetupDialog), "setupcraftingtabledlg");
+            betable.MarkDirty();
+            this.capi.Event.EnqueueMainThreadTask(new Action(this.SetupDialog), "setupcraftingtabledlg");           
         }
 
         public void SetupDialog()
         {
             ItemSlot hoveredSlot = this.capi.World.Player.InventoryManager.CurrentHoveredSlot;
-            if (hoveredSlot != null && hoveredSlot.Inventory == base.Inventory)
+            if (hoveredSlot != null)
             {
-                this.capi.Input.TriggerOnMouseLeaveSlot(hoveredSlot);
+                InventoryBase inv1 = hoveredSlot.Inventory;
+                string inv1str = (inv1 != null) ? inv1.InventoryID : null;
+                InventoryBase inv2 = base.Inventory;
+                if (inv1str != ((inv2 != null) ? inv2.InventoryID : null))
+                {
+                    hoveredSlot = null;
+                }
             }
-            else
-            {
-                hoveredSlot = null;
-            }
-
+            
             double elementtodialogpadding = GuiStyle.ElementToDialogPadding;
             double unscaledslotpadding = GuiElementItemSlotGridBase.unscaledSlotPadding;
 
@@ -60,6 +63,7 @@ namespace CraftingTable
             });
             ElementBounds window = ElementStdBounds.AutosizedMainDialog.WithAlignment(EnumDialogArea.RightMiddle)
                 .WithFixedAlignmentOffset(-GuiStyle.DialogToScreenPadding, 0);
+            base.ClearComposers();
             if (this.capi.Settings.Bool["immersiveMouseMode"])
             {
                 window.WithAlignment(EnumDialogArea.RightMiddle).WithFixedAlignmentOffset(-12, 0);
@@ -89,8 +93,8 @@ namespace CraftingTable
 
         private void SendInvPacket(object p)
         {
-            //this.capi.Network.SendBlockEntityPacket(base.BlockEntityPosition.X, BlockEntityPosition.Y, BlockEntityPosition.Z, p);            
-            this.capi.Network.SendPacketClient(p);
+            this.capi.Network.SendBlockEntityPacket(base.BlockEntityPosition.X, BlockEntityPosition.Y, BlockEntityPosition.Z, p);            
+            //this.capi.Network.SendPacketClient(p);
         }
 
         private bool OnClearButton()
