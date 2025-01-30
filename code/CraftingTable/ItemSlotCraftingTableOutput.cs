@@ -22,7 +22,7 @@ namespace CraftingTable
 
         protected override void FlipWith(ItemSlot withSlot)
         {
-            ItemStackMoveOperation itemStackMoveOperation = new ItemStackMoveOperation(this.Inv.Api.World, EnumMouseButton.Button1, (EnumModifierKey)0, EnumMergePriority.AutoMerge, base.StackSize);
+            ItemStackMoveOperation itemStackMoveOperation = new ItemStackMoveOperation(this.Inv.Api.World, EnumMouseButton.Left, (EnumModifierKey)0, EnumMergePriority.AutoMerge, base.StackSize);
             this.CraftSingle(withSlot, ref itemStackMoveOperation);
         }
 

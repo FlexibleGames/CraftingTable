@@ -224,7 +224,7 @@ namespace CraftingTable
             {
                 if (inventory.tableuser != null && inventory.tableuser.PlayerUID == byPlayer.PlayerUID)
                 {   // player has GUI open and is right clicking to close it
-                    sapi.Network.SendBlockEntityPacket((IServerPlayer)byPlayer, Pos.X, Pos.Y, Pos.Z, 1001, null);
+                    sapi.Network.SendBlockEntityPacket((IServerPlayer)byPlayer, Pos, 1001, null);
                     byPlayer.InventoryManager.CloseInventory(inventory);
                     inventory.SetPlayer(null);
                     base.MarkDirty(false);
@@ -235,7 +235,7 @@ namespace CraftingTable
                 }
                 else
                 {   // no one has the GUI open
-                    sapi.Network.SendBlockEntityPacket((IServerPlayer)byPlayer, Pos.X, Pos.Y, Pos.Z, 1000, null);
+                    sapi.Network.SendBlockEntityPacket((IServerPlayer)byPlayer, Pos, 1000, null);
                     byPlayer.InventoryManager.OpenInventory(inventory);                    
                     inventory.SetPlayer(byPlayer);
                     inventory.FindMatchingRecipe();
